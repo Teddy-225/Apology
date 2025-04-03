@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apology Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8d7da;
+            margin: 0;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            position: relative;
+        }
+        h1 {
+            color: #721c24;
+        }
+        p {
+            color: #721c24;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+        }
+        .button {
+            background: #f5c6cb;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            position: relative;
+        }
+        .button:hover {
+            background: #f1b0b7;
+        }
+        .no-button {
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>We're Sorry</h1>
+    <p>We sincerely apologize for any inconvenience we may have caused. Please let us know how we can make it right.</p>
+    <div class="button-container">
+        <button class="button" id="acceptButton" onclick="acceptApology()">Accept Apology</button>
+        <button class="button no-button" id="noButton">No</button>
+    </div>
+</div>
+<script>
+    let timeout;
+    let noButton = document.getElementById('noButton');
+    let acceptButton = document.getElementById('acceptButton');
+
+    function setInitialPosition() {
+        let acceptRect = acceptButton.getBoundingClientRect();
+        let containerRect = document.querySelector('.container').getBoundingClientRect();
+
+        noButton.style.position = 'absolute';
+        noButton.style.left = `${acceptButton.offsetLeft + acceptButton.offsetWidth + 20}px`;
+        noButton.style.top = `${acceptButton.offsetTop}px`;
+    }
+
+    function moveButton() {
+        clearTimeout(timeout);
+        let container = document.querySelector('.container');
+        let containerRect = container.getBoundingClientRect();
+        let buttonRect = noButton.getBoundingClientRect();
+
+        let maxX = containerRect.width - buttonRect.width - 20;
+        let maxY = containerRect.height - buttonRect.height - 20;
+
+        let randomX, randomY;
+        do {
+            randomX = Math.floor(Math.random() * maxX);
+            randomY = Math.floor(Math.random() * maxY);
+        } while (
+            (randomX > acceptButton.offsetLeft - 50 && randomX < acceptButton.offsetLeft + acceptButton.offsetWidth + 50) &&
+            (randomY > acceptButton.offsetTop - 30 && randomY < acceptButton.offsetTop + acceptButton.offsetHeight + 30)
+        );
+
+        noButton.style.left = randomX + 'px';
+        noButton.style.top = randomY + 'px';
+        resetPositionAfterDelay();
+    }
+
+    function resetPositionAfterDelay() {
+        clearTimeout(timeout);
+        timeout = setTimeout(setInitialPosition, 1000);
+    }
+
+    function acceptApology() {
+        // Open a new page with fireworks and a thank-you message
+        window.location.href = 'thankyou.html';
+
+        // Send an event to notify the sender
+        fetch('https://yourserver.com/api/notify', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: 'Apology accepted!' })
+        }).catch(error => console.error('Error sending notification:', error));
+    }
+
+    window.onload = setInitialPosition;
+    document.getElementById('noButton').addEventListener('mouseover', moveButton);
+    document.getElementById('noButton').addEventListener('touchstart', moveButton);
+    document.getElementById('noButton').addEventListener('click', moveButton);
+</script>
+</body>
+</html>

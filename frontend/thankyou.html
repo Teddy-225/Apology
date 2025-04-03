@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffccf9;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+            color: #ff4081;
+            position: absolute;
+            top: 20%;
+            font-family: 'Comic Sans MS', cursive;
+        }
+        .fireworks {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        .penguin {
+            position: absolute;
+            bottom: -300px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            opacity: 0;
+            transition: bottom 1s ease-in-out, opacity 0.5s ease-in-out;
+        }
+        .penguin.show {
+            bottom: 50px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+<h1>Huhuhuhuhuhu! 🎉</h1>
+<canvas class="fireworks"></canvas>
+<img src="pengu.png" alt="Cute Animated Penguin" class="penguin" id="penguin">
+<script>
+    const canvas = document.querySelector('.fireworks');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Firework {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.color = `hsl(${Math.random() * 360}, 100%, 70%)`;
+            this.size = Math.random() * 25 + 20; // Increased size
+            this.speedX = Math.random() * 10 - 5;
+            this.speedY = Math.random() * 10 - 5;
+            this.lifetime = 150;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            this.size *= 0.95;
+            this.lifetime -= 2;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+    }
+
+    let fireworks = [];
+
+    function createFireworks() {
+        for (let i = 0; i < 5; i++) { // Increased frequency
+            let x = Math.random() * canvas.width;
+            let y = Math.random() * canvas.height;
+            for (let j = 0; j < 30; j++) { // Increased particles per firework
+                fireworks.push(new Firework(x, y));
+            }
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        fireworks.forEach((firework, index) => {
+            firework.update();
+            firework.draw();
+            if (firework.lifetime <= 0) {
+                fireworks.splice(index, 1);
+            }
+        });
+        requestAnimationFrame(animate);
+    }
+
+    setInterval(createFireworks, 700); // Fireworks every 0.7 seconds
+    animate();
+
+    // Show penguin immediately on page load
+    window.onload = () => {
+        document.getElementById('penguin').classList.add('show');
+    };
+</script>
+</body>
+</html>
