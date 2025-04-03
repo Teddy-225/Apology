@@ -105,7 +105,10 @@
     }
 
     function acceptApology() {
-        // Send email request to backend
+        // Disable button and show loading state
+        acceptButton.disabled = true;
+        acceptButton.textContent = "Sending...";
+
         fetch('https://apology-deploy.onrender.com/api/send-email', {
             method: 'POST',
             headers: {
@@ -121,7 +124,14 @@
         .then(data => {
             window.location.href = 'thankyou.html';  // Redirect to thank-you page
         })
-        .catch(error => console.error('Error sending email:', error));
+        .catch(error => {
+            console.error('Error sending email:', error);
+            alert("Failed to send email. Please try again.");
+        })
+        .finally(() => {
+            acceptButton.disabled = false;
+            acceptButton.textContent = "Accept Apology";
+        });
     }
 
     window.onload = setInitialPosition;
