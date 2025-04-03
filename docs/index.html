@@ -105,17 +105,23 @@
     }
 
     function acceptApology() {
-        // Open a new page with fireworks and a thank-you message
-        window.location.href = 'thankyou.html';
-
-        // Send an event to notify the sender
-        fetch('https://yourserver.com/api/notify', {
+        // Send email request to backend
+        fetch('https://apology-deploy.onrender.com/api/send-email', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ message: 'Apology accepted!' })
-        }).catch(error => console.error('Error sending notification:', error));
+            body: JSON.stringify({
+                to: "kapoorsharan98@gmail.com",
+                subject: "Apology Accepted",
+                message: "Thank you for your apology. I appreciate it."
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            window.location.href = 'thankyou.html';  // Redirect to thank-you page
+        })
+        .catch(error => console.error('Error sending email:', error));
     }
 
     window.onload = setInitialPosition;
