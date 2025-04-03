@@ -4,29 +4,31 @@ import smtplib
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
-# Email credentials (stored securely in .env file)
 EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+
+
+@app.route('/')
+def home():
+    return jsonify({"message": "Server is running in production!"})
 
 
 @app.route('/api/send-email', methods=['POST'])
 def send_email():
     try:
         data = request.get_json()
-        recipient = data.get("to", "default@example.com")  # Default recipient
+        recipient = data.get("to", "default@example.com")
         subject = data.get("subject", "No Subject")
         message = data.get("message", "No message provided.")
 
-        # Create email content
         email_body = f"Subject: {subject}\n\n{message}"
 
-        # Send email using SMTP
         with smtplib.SMTP("smtp.gmail.com", 587) as server:
             server.starttls()
             server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
@@ -39,4 +41,5 @@ def send_email():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    port = int(os.environ.get("PORT", 5001))  # Render assigns a PORT
+    app.run(host='0.0.0.0', port=port)
