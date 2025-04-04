@@ -1,143 +1,339 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apology Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f8d7da;
-            margin: 0;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            position: relative;
-        }
-        h1 {
-            color: #721c24;
-        }
-        p {
-            color: #721c24;
-        }
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            position: relative;
-        }
-        .button {
-            background: #f5c6cb;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            position: relative;
-        }
-        .button:hover {
-            background: #f1b0b7;
-        }
-        .no-button {
-            transition: all 0.2s ease;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apology Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #fff1f5, #ffeaf0);
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      background: white;
+      padding: 30px 25px;
+      border-radius: 18px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      max-width: 500px;
+      width: 100%;
+      position: relative;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .mascot {
+      width: 120px;
+      margin: -20px auto 10px;
+      animation: floatMascot 4s ease-in-out infinite;
+    }
+
+    .mascot-caption {
+      font-size: 18px;
+      color: #d81b60;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      color: #c2185b;
+      margin-bottom: 10px;
+      animation: pop 2s infinite;
+    }
+
+    #typewriter {
+      color: #ad1457;
+      font-size: 17px;
+      margin-bottom: 20px;
+      min-height: 50px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin-top: 20px;
+    }
+
+    .button {
+      background: #f8bbd0;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      color: #880e4f;
+      width: 45%;
+      transition: transform 0.2s ease, background 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 2;
+    }
+
+    .button:hover {
+      background: #f48fb1;
+      transform: scale(1.05);
+    }
+
+    .no-button {
+      position: absolute;
+    }
+
+    .emoji {
+      font-size: 20px;
+      position: absolute;
+      opacity: 0.5;
+      pointer-events: none;
+      animation: floatUp 10s linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh) scale(1);
+        opacity: 0.2;
+      }
+      50% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1);
+        opacity: 0;
+      }
+    }
+
+    .trail {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+      animation: fadeOut 1.2s forwards;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatMascot {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pop {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
+    .emoji-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-    <h1>We're Sorry</h1>
-    <p>We sincerely apologize for any inconvenience we may have caused. Please let us know how we can make it right.</p>
-    <div class="button-container">
-        <button class="button" id="acceptButton" onclick="acceptApology()">Accept Apology</button>
-        <button class="button no-button" id="noButton">No</button>
+  <div class="emoji-container" id="emojiBackground"></div>
+
+  <div class="container">
+    <img src="https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" alt="Mascot" class="mascot">
+    <div class="mascot-caption">I'm really sorry... 😔</div>
+    <h1>Forgive Me?</h1>
+    <div id="typewriter"></div>
+    <div class="button-container" id="btnContainer">
+      <button class="button" id="acceptButton" onclick="acceptApology()">💌 Accept</button>
+      <button class="button no-button" id="noButton">🙅 No</button>
     </div>
-</div>
-<script>
-    let timeout;
-    let noButton = document.getElementById('noButton');
-    let acceptButton = document.getElementById('acceptButton');
+  </div>
 
-    function setInitialPosition() {
-        let acceptRect = acceptButton.getBoundingClientRect();
-        let containerRect = document.querySelector('.container').getBoundingClientRect();
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+  const acceptButton = document.getElementById('acceptButton');
+  const noButton = document.getElementById('noButton');
+  const container = document.querySelector('.container');
+  const emojiContainer = document.getElementById("emojiBackground");
+  const rainbowColors = ['#ff1744', '#ff9100', '#ffee58', '#00e676', '#00b0ff', '#d500f9'];
 
-        noButton.style.position = 'absolute';
-        noButton.style.left = `${acceptButton.offsetLeft + acceptButton.offsetWidth + 20}px`;
-        noButton.style.top = `${acceptButton.offsetTop}px`;
+  let timeout;
+  let originalNoX = 0, originalNoY = 0;
+  let buttonMoved = false;
+
+  function setInitialPosition() {
+    const acceptRect = acceptButton.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    const left = acceptButton.offsetLeft;
+    const top = acceptButton.offsetTop;
+
+    // Calculate space between buttons
+    const gap = 20;
+    const newX = left + acceptButton.offsetWidth + gap;
+    const newY = top;
+
+    originalNoX = newX;
+    originalNoY = newY;
+
+    noButton.style.position = 'absolute';
+    noButton.style.left = `${originalNoX}px`;
+    noButton.style.top = `${originalNoY}px`;
+
+    acceptButton.style.position = 'relative';
+    acceptButton.style.left = '0';
+  }
+
+  function resetPositions() {
+    noButton.style.left = `${originalNoX}px`;
+    noButton.style.top = `${originalNoY}px`;
+
+    acceptButton.style.position = 'relative';
+    acceptButton.style.left = '0';
+    buttonMoved = false;
+  }
+
+  function moveButton(e) {
+  clearTimeout(timeout);
+  const containerRect = container.getBoundingClientRect();
+  const acceptRect = acceptButton.getBoundingClientRect();
+  const buffer = 80;
+
+  let randX, randY;
+
+  do {
+    randX = Math.floor(Math.random() * (containerRect.width - noButton.offsetWidth - 10));
+    randY = Math.floor(Math.random() * (containerRect.height - noButton.offsetHeight - 10));
+  } while (
+    randX > acceptButton.offsetLeft - buffer &&
+    randX < acceptButton.offsetLeft + acceptButton.offsetWidth + buffer &&
+    randY > acceptButton.offsetTop - buffer &&
+    randY < acceptButton.offsetTop + acceptButton.offsetHeight + buffer
+  );
+
+  noButton.style.left = `${randX}px`;
+  noButton.style.top = `${randY}px`;
+
+  // Center the accept button only if noButton is running
+  acceptButton.style.position = "absolute";
+  acceptButton.style.left = `${containerRect.width / 2 - acceptButton.offsetWidth / 2}px`;
+  buttonMoved = true;
+
+  const x = (e.clientX || (e.touches && e.touches[0].clientX)) || randX;
+  const y = (e.clientY || (e.touches && e.touches[0].clientY)) || randY;
+  createRainbowTrail(x, y);
+
+  timeout = setTimeout(() => {
+    if (buttonMoved) resetPositions();
+  }, 2500);
+}
+
+  function createRainbowTrail(x, y) {
+  for (let i = 0; i < 10; i++) {
+    const trail = document.createElement("div");
+    trail.classList.add("trail");
+    trail.style.left = `${x + Math.random() * 10 - 5}px`;
+    trail.style.top = `${y + Math.random() * 10 - 5}px`;
+    trail.style.background = rainbowColors[i % rainbowColors.length];
+    document.body.appendChild(trail);
+    setTimeout(() => trail.remove(), 1000);
+  }
+}
+
+  function acceptApology() {
+    acceptButton.disabled = true;
+    acceptButton.textContent = "Sending 💌...";
+
+    fetch('https://apology-deploy.onrender.com/api/send-email', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        to: "kapoorsharan98@gmail.com",
+        subject: "Apology Accepted",
+        message: "Thank you for your apology. I appreciate it."
+      })
+    })
+    .then(res => res.json())
+    .then(() => {
+      confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
+      setTimeout(() => window.location.href = 'thankyou.html', 2000);
+    })
+    .catch(() => alert("Oops! Something went wrong 💔"))
+    .finally(() => {
+      acceptButton.disabled = false;
+      acceptButton.textContent = "💌 Accept";
+    });
+  }
+
+  function typeWriterEffect(text, element, speed = 40) {
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        element.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(type, speed);
+      }
     }
+    type();
+  }
 
-    function moveButton() {
-        clearTimeout(timeout);
-        let container = document.querySelector('.container');
-        let containerRect = container.getBoundingClientRect();
-        let buttonRect = noButton.getBoundingClientRect();
+  function floatingEmojis() {
+    const emojis = ["🌸", "🌈", "💖", "✨", "🩷", "🧚‍♀️"];
+    setInterval(() => {
+      const emoji = document.createElement("div");
+      emoji.className = "emoji";
+      emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      emoji.style.left = Math.random() * window.innerWidth + "px";
+      emojiContainer.appendChild(emoji);
+      setTimeout(() => emoji.remove(), 10000);
+    }, 700);
+  }
 
-        let maxX = containerRect.width - buttonRect.width - 20;
-        let maxY = containerRect.height - buttonRect.height - 20;
+  function cherryBlossomFall() {
+  const petals = ["🌸", "🌸", "🌸"];
+  setInterval(() => {
+    const petal = document.createElement("div");
+    petal.className = "emoji";
+    petal.textContent = petals[Math.floor(Math.random() * petals.length)];
+    petal.style.left = Math.random() * window.innerWidth + "px";
+    petal.style.fontSize = Math.random() * 24 + 16 + "px";
+    petal.style.opacity = Math.random() * 0.6 + 0.4;
+    emojiContainer.appendChild(petal);
+    setTimeout(() => petal.remove(), 12000);
+  }, 500);
+}
 
-        let randomX, randomY;
-        do {
-            randomX = Math.floor(Math.random() * maxX);
-            randomY = Math.floor(Math.random() * maxY);
-        } while (
-            (randomX > acceptButton.offsetLeft - 50 && randomX < acceptButton.offsetLeft + acceptButton.offsetWidth + 50) &&
-            (randomY > acceptButton.offsetTop - 30 && randomY < acceptButton.offsetTop + acceptButton.offsetHeight + 30)
-        );
+  window.onload = () => {
+  cherryBlossomFall();
+    setInitialPosition();
+    typeWriterEffect("Please forgive us! We'll do everything to make it right 💕", document.getElementById('typewriter'));
+    floatingEmojis();
+  };
 
-        noButton.style.left = randomX + 'px';
-        noButton.style.top = randomY + 'px';
-        resetPositionAfterDelay();
-    }
-
-    function resetPositionAfterDelay() {
-        clearTimeout(timeout);
-        timeout = setTimeout(setInitialPosition, 1000);
-    }
-
-    function acceptApology() {
-        // Disable button and show loading state
-        acceptButton.disabled = true;
-        acceptButton.textContent = "Sending...";
-
-        fetch('https://apology-deploy.onrender.com/api/send-email', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                to: "kapoorsharan98@gmail.com",
-                subject: "Apology Accepted",
-                message: "Thank you for your apology. I appreciate it."
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            window.location.href = 'thankyou.html';  // Redirect to thank-you page
-        })
-        .catch(error => {
-            console.error('Error sending email:', error);
-            alert("Failed to send email. Please try again.");
-        })
-        .finally(() => {
-            acceptButton.disabled = false;
-            acceptButton.textContent = "Accept Apology";
-        });
-    }
-
-    window.onload = setInitialPosition;
-    document.getElementById('noButton').addEventListener('mouseover', moveButton);
-    document.getElementById('noButton').addEventListener('touchstart', moveButton);
-    document.getElementById('noButton').addEventListener('click', moveButton);
+  noButton.addEventListener('mouseover', moveButton);
+  noButton.addEventListener('click', moveButton);
+  noButton.addEventListener('touchstart', moveButton);
 </script>
+
 </body>
 </html>
