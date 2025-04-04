@@ -6,8 +6,9 @@
   <title>Apology Page</title>
   <style>
     * {
-      box-sizing: border-box;
-    }
+  box-sizing: border-box;
+  font-family: 'Comic Sans MS', cursive, sans-serif !important;
+}
 
     body {
       font-family: 'Comic Sans MS', cursive, sans-serif;
@@ -153,7 +154,7 @@
 
   .greeting {
   position: absolute;
-  top: 12%;
+  top: 8vh; /* Fixed missing semicolon */
   left: 50%;
   transform: translateX(-50%);
   font-size: 22px;
@@ -162,6 +163,13 @@
   font-family: 'Comic Sans MS', cursive, sans-serif;
   animation: wave 1.5s infinite;
   white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .greeting {
+    top: 12vh;
+    font-size: 18px;
+  }
 }
 
     .emoji-container {
