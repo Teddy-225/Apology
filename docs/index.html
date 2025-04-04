@@ -146,6 +146,24 @@
       50% { transform: scale(1.03); }
     }
 
+    @keyframes wave {
+    0%, 100% { transform: translateX(-50%) rotate(0deg); }
+    50% { transform: translateX(-50%) rotate(10deg); }
+  }
+
+  .greeting {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 22px;
+  font-weight: bold;
+  color: #d81b60;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  animation: wave 1.5s infinite;
+  white-space: nowrap;
+}
+
     .emoji-container {
       position: absolute;
       width: 100%;
@@ -158,10 +176,12 @@
 </head>
 <body>
   <div class="emoji-container" id="emojiBackground"></div>
-
+  <div class="greeting">👋 Hi Angel!</div>
   <div class="container">
-    <img src="https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" alt="Mascot" class="mascot">
-    <div class="mascot-caption">I'm really sorry... 😔</div>
+<img src="/docs/pengu1.gif" alt="Mascot" class="mascot">
+    <div class="mascot-caption">Sometimes, I choose the wrong words and end up saying something I don’t actually mean.
+        I’ve been feeling that I may have hurt you because of this over the past few days, and I truly regret it.
+        I’m really sorry... 😔</div>
     <h1>Forgive Me?</h1>
     <div id="typewriter"></div>
     <div class="button-container" id="btnContainer">
@@ -213,40 +233,37 @@
     buttonMoved = false;
   }
 
-  function moveButton(e) {
+function moveButton(e) {
   clearTimeout(timeout);
+
   const containerRect = container.getBoundingClientRect();
-  const acceptRect = acceptButton.getBoundingClientRect();
-  const buffer = 80;
+  const noButtonRect = noButton.getBoundingClientRect();
+  const acceptButtonRect = acceptButton.getBoundingClientRect();
 
-  let randX, randY;
+  const step = 50; // Movement step (keeps it within reach)
+  const padding = 20; // Space to prevent it from hitting the edges
 
-  do {
-    randX = Math.floor(Math.random() * (containerRect.width - noButton.offsetWidth - 10));
-    randY = Math.floor(Math.random() * (containerRect.height - noButton.offsetHeight - 10));
-  } while (
-    randX > acceptButton.offsetLeft - buffer &&
-    randX < acceptButton.offsetLeft + acceptButton.offsetWidth + buffer &&
-    randY > acceptButton.offsetTop - buffer &&
-    randY < acceptButton.offsetTop + acceptButton.offsetHeight + buffer
-  );
+  let newX = noButton.offsetLeft + (Math.random() > 0.5 ? step : -step);
+  let newY = noButton.offsetTop + (Math.random() > 0.5 ? step : -step);
 
-  noButton.style.left = `${randX}px`;
-  noButton.style.top = `${randY}px`;
+  // Keep the button inside the container
+  newX = Math.max(padding, Math.min(newX, containerRect.width - noButtonRect.width - padding));
+  newY = Math.max(padding, Math.min(newY, containerRect.height - noButtonRect.height - padding));
 
-  // Center the accept button only if noButton is running
-  acceptButton.style.position = "absolute";
-  acceptButton.style.left = `${containerRect.width / 2 - acceptButton.offsetWidth / 2}px`;
+  noButton.style.left = `${newX}px`;
+  noButton.style.top = `${newY}px`;
+
   buttonMoved = true;
 
-  const x = (e.clientX || (e.touches && e.touches[0].clientX)) || randX;
-  const y = (e.clientY || (e.touches && e.touches[0].clientY)) || randY;
-  createRainbowTrail(x, y);
+  // Keep "Accept" button centered
+  acceptButton.style.position = "absolute";
+  acceptButton.style.left = `${(containerRect.width - acceptButtonRect.width) / 2}px`;
 
   timeout = setTimeout(() => {
     if (buttonMoved) resetPositions();
   }, 2500);
 }
+
 
   function createRainbowTrail(x, y) {
   for (let i = 0; i < 10; i++) {
@@ -270,7 +287,7 @@
       body: JSON.stringify({
         to: "kapoorsharan98@gmail.com",
         subject: "Apology Accepted",
-        message: "Thank you for your apology. I appreciate it."
+        message: "Hi Angel!, Thank you. Get free from office early today, we will go out heheh!"
       })
     })
     .then(res => res.json())
@@ -326,7 +343,7 @@
   window.onload = () => {
   cherryBlossomFall();
     setInitialPosition();
-    typeWriterEffect("Please forgive us! We'll do everything to make it right 💕", document.getElementById('typewriter'));
+    typeWriterEffect("Please forgive me! I'll make it up to you 💕", document.getElementById('typewriter'));
     floatingEmojis();
   };
 
